@@ -1,109 +1,214 @@
 import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals; 
+import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 public class AppTest {
     @Test
-    public void check_text_get_set(){
-        //arrange
-        final String testText = "Java8 makes Java more powerful"; 
-        SearchWord searchWord = new SearchWord();
-        //act
-        searchWord.setText("Java8 makes Java more powerful");
-        //assert
-        assertEquals(searchWord.getText(), testText);
+    public void check_text_get_set() {
+        // arrange
+        final String expectedText = "Java8 makes Java more powerful";
+        WordLists wordsArray = new WordLists();
+        // act
+        wordsArray.setText("Java8 makes Java more powerful");
+        // assert
+        assertEquals(expectedText, wordsArray.getText());
     }
 
     @Test
-    public void check_word_get_set(){
-        //arrange
-        final String testWord = "Java8";   
-        SearchWord searchWord = new SearchWord();
-        //act
-        searchWord.setSearch_word("Java8");
-        //assert
-        assertEquals(searchWord.getSearch_word(), testWord);
+    public void search_word() {
+        // arrange
+        final boolean expectedBool = true;
+        WordLists wordsList = new WordLists();
+        // act
+        boolean actualBool = wordsList.isFound_ByWord("Java8", "Java8 makes Java more powerful");
+        // assert
+        assertEquals(expectedBool, actualBool);
     }
 
     @Test
-    public void check_boolean_get_set(){
-        //arrange
-        final boolean TrueBool = true;
-        SearchWord searchWord = new SearchWord();
-        //act
-        searchWord.setFound(true);
-        //assert
-        assertEquals(TrueBool, searchWord.isFound());
+    public void word_appears_1_time() {
+        // arrange
+        final int expectedFrequency = 1;
+        WordLists wordsList = new WordLists();
+        String[] testArray = { "Java8", "makes", "Java", "more", "powerful" };
+        String testText = "Java8 makes Java more powerful";
+        // act
+        wordsList.setAllWords(testArray);
+        wordsList.count_ByWord("Java8", testText);
+        int actualFrecuency = wordsList.getFrequency();
+        // assert
+        assertEquals(expectedFrequency, actualFrecuency);
     }
 
     @Test
-    public void check_search_function(){
-        //arrange
-        final boolean TrueBool = true;
-        SearchWord searchWord = new SearchWord();
-        //act
-        searchWord.setSearch_word("Java8");
-        searchWord.setText("Java8 makes Java more powerful");
-        searchWord.search();
-        //assert
-        assertEquals(TrueBool, searchWord.isFound());
+    public void word_appears_2_times() {
+        // arrange
+        final int expectedFrequency = 2;
+        WordLists wordsList = new WordLists();
+        String testText = "Java8 Java8 makes Java more powerful";
+        String[] testArray = { "Java8", "Java8", "makes", "Java", "more", "powerful" };
+
+        // act
+        wordsList.setAllWords(testArray);
+        wordsList.count_ByWord("Java8", testText);
+        int actualFrecuency = wordsList.getFrequency();
+
+        // assert
+        assertEquals(expectedFrequency, actualFrecuency);
     }
 
     @Test
-    public void check_counter_function(){
-        //arrange
-        SearchWord searchWord = new SearchWord();
-        final String testWord = "Java8"; 
-        final String test_text = "Java8 makes Java more powerful";
-        //act
-        searchWord.setSearch_word(testWord);
-        searchWord.setText(test_text);
-        searchWord.word_counter();
-             
-        //assert
-        assertEquals(1, searchWord.getWord_counter());
-    }
-    
-    @Test
-    public void check_counter_loop(){
-        //arrange
-        SearchWord searchWord = new SearchWord();
-        //act
-        searchWord.setSearch_word("Java8");   
-        searchWord.setText("Java8 makes Java more powerful Java8");
-        searchWord.search();
-        //assert
-        assertEquals(2, searchWord.getWord_counter());
+    public void string_converts_to_array() {
+        // arrange
+        final String[] arrayExpected = { "Java8", "makes", "Java", "more", "powerful" };
+        WordLists wordsList = new WordLists();
+
+        // act
+        wordsList.enlistWords("Java8 makes Java more powerful");
+        String[] actualArray = wordsList.getWords();
+
+        // assert
+        assertArrayEquals(arrayExpected, actualArray);
     }
 
     @Test
-    public void check_array(){
-        //arrange
-        SearchWord searchWord = new SearchWord();
-        final String [] array_expected = {"Java8", "makes", "Java", "more", "powerful"};
-        
-        //act
-        searchWord.setText("Java8 makes Java more powerful");
-        searchWord.WordsCounter();
-        String[] array_received = searchWord.getWordsArray();
-        
-        //assert
-        assertArrayEquals(array_expected, array_received);
+    public void string_converts_to_no_duplicates_array() {
+        // arrange
+        final String[] arrayExpected = { "Java8", "makes", "Java", "more", "powerful" };
+        WordLists wordsList = new WordLists();
+
+        // act
+        wordsList.enlistWords("Java8 Java8 makes Java more powerful");
+        String[] actualArray = wordsList.getWords();
+
+        // assert
+        assertArrayEquals(arrayExpected, actualArray);
     }
 
     @Test
-    public void check_word_in_array(){
-        //arrange
-        SearchWord searchWord = new SearchWord();
-        final String word_expected = "makes";
-        
-        //act
-        searchWord.setText("Java8 makes Java more powerful Java8");
-        searchWord.WordsCounter();
-        String word_inArray = searchWord.getWordInArray(1);
-        
-        //assert
-        assertEquals(word_expected, word_inArray);
+    public void search_word_in_array() {
+        // arrange
+        final String wordExpected = "makes";
+        WordLists wordsArray = new WordLists();
+
+        // act
+        wordsArray.enlistWords("Java8 Java8 makes Java Java more powerful Java8");
+        String actualWord = wordsArray.getWord_ByPosition(1);
+
+        // assert
+        assertEquals(wordExpected, actualWord);
     }
+
+    @Test
+    public void get_full_word_frequencies_list() {
+        // arrange
+        final int[] frequenciesExpected = { 3, 1, 2, 1, 1 };
+        WordLists wordList = new WordLists();
+
+        // act
+        String[] testWords = { "Java8", "makes", "Java", "more", "powerful" };
+        String[] testAllWords = { "Java8", "Java8", "makes", "Java", "Java", "more", "powerful", "Java8" };
+
+        // wordsList.enlistWords(testText);
+        wordList.setAllWords(testAllWords);
+        wordList.setWords(testWords);
+        wordList.countAndEnlist();
+        int[] actualFrequencies = wordList.getFrequencies();
+
+        // assert
+        assertArrayEquals(frequenciesExpected, actualFrequencies);
+    }
+
+    @Test
+    public void get_frequencies_from_text() {
+        // arrange
+        final int[] frequenciesExpected = { 3, 1, 2, 1, 1 };
+        WordLists wordList = new WordLists();
+
+        // act
+        String testText = "Java8 Java8 makes Java Java more powerful Java8";
+
+        // wordsList.enlistWords(testText);
+        wordList.enlistWords(testText);
+        int[] actualFrequencies = wordList.getFrequencies();
+
+        // assert
+        assertArrayEquals(frequenciesExpected, actualFrequencies);
+    }
+
+    @Test
+    public void sorts_by_frequencies() {
+        // arrange
+        SortedLists listsConnection = new SortedLists();
+        final int[] testFrequencies = { 3, 2, 5, 1, 4 };
+        final int[] expectedFrequencies = { 5, 4, 3, 2, 1 };
+        final String[] testWords = { "Java8", "makes", "code", "more", "powerful" };
+
+        // act
+        listsConnection.sortArrays(testWords, testFrequencies);
+        int[] actualFrequencies = listsConnection.getFrequencies();
+
+        // assert
+        assertArrayEquals(expectedFrequencies, actualFrequencies);
+
+    }
+
+    @Test
+    public void words_get_sorted_by_frequencies() {
+        // arrange
+        SortedLists listsConnection = new SortedLists();
+        final int[] testFrequencies = { 3, 2, 5, 1, 4 };
+        final String[] expectedWords = { "code", "powerful", "Java8", "makes", "more" };
+        final String[] testWords = { "Java8", "makes", "code", "more", "powerful" };
+
+        // act
+
+        listsConnection.sortArrays(testWords, testFrequencies);
+        String[] actualWords = listsConnection.getWords();
+
+        // assert
+        assertArrayEquals(expectedWords, actualWords);
+
+    }
+
+    @Test
+    public void sorts_by_frequencies_fromText() {
+        // arrange
+        final int[] expectedFrequencies = { 3, 2, 1, 1, 1 };
+        String testText = "Java8 Java8 makes Java Java more powerful Java8";
+
+        WordLists wordList = new WordLists();
+        SortedLists listsConnection = new SortedLists();
+
+        // act
+        wordList.enlistWords(testText);
+        String[] testWords = wordList.getWords();
+        int[] testFreq = wordList.getFrequencies();
+        listsConnection.sortArrays(testWords, testFreq);
+        int[] actualFrequencies = listsConnection.getFrequencies();
+
+        // assert
+        assertArrayEquals(expectedFrequencies, actualFrequencies);
+
+    }
+
+    @Test
+    public void words_get_sorted_fromText() {
+        // arrange
+        final String[] expectedWords = { "Java8", "makes", "Java", "more", "powerful" };
+        String testText = "Java8 Java8 Java8 makes makes makes makes Java Java Java more more powerful Java8 Java8";
+        WordLists wordList = new WordLists();
+        SortedLists listsConnection = new SortedLists();
+
+        // act
+
+        wordList.enlistWords(testText);
+        listsConnection.sortArrays(wordList.getWords(), wordList.getFrequencies());
+        String[] actualWords = listsConnection.getWords();
+
+        // assert
+        assertArrayEquals(expectedWords, actualWords);
+
+    }
+
 }
-

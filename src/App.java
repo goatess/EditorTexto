@@ -1,74 +1,141 @@
+import java.util.ArrayList;
+import java.util.List;
+
 public class App {
     public static void main(String[] args) throws Exception {
-        SearchWord searchWord = new SearchWord();
-        searchWord.WordsCounter();
     }
 }
 
-class SearchWord{
-    //new counter parameters
-    private String text = "";
-    private String [] words = null;
-    //old functions parameters
-    private String search_word = "";
-    private boolean isFound = false;
-    private int word_counter = 0;
-    private int text_length = text.length();
-    
-    // New Counter
-    void WordsCounter(){
-        words = text.split(" ");
-        
+class WordLists {
+    String text = "";
+    String[] words = new String[] {};
+    String[] wordsWithDupes = new String[] {};
+    int[] frequencies = new int[] {};
+    int frequency = 0;
+
+    boolean count_ByWord(String word , String text) {
+        enlistWords(text);
+        boolean found = false;
+        int frequency = 0;
+        for (int index = 0; index < wordsWithDupes.length; index++) {
+            if (word.equals(wordsWithDupes[index])) {
+                frequency++;
+                }
+        }
+        this.frequency = frequency;
+        if (frequency>0) {
+            found = true;
+        }
+        return found;
     }
 
-    // Old functions
-    boolean search(){
-        isFound = text.contains(search_word);
-        word_counter();
-        return isFound;
+    public void enlistWords(String text) {
+        String textNoDuplicate = eliminateDuplicates(text, " ");
+        String[] words = textNoDuplicate.split(" ");
+        this.words = words;
+        countAndEnlist();
     }
-    
-    int word_counter(){
-        for (int index = 0; index < text.length(); index++) {
-            if (text.substring(index).startsWith(search_word)) {
-                word_counter ++;
+
+    String eliminateDuplicates(String text, String splitterRegex) {
+        text = text.replaceAll("[\\.\\,\\(\\)]", "");
+        List<String> values = new ArrayList<String>();
+        String[] wordsWithDupes = text.split(splitterRegex);
+        StringBuilder noDuplicate = new StringBuilder();
+        for (int index = 0; index < wordsWithDupes.length; ++index) {
+
+            if (!values.contains(wordsWithDupes[index])) {
+                values.add(wordsWithDupes[index]);
+                noDuplicate.append(" ");
+                noDuplicate.append(wordsWithDupes[index]);
             }
         }
-        return word_counter;      
+        this.wordsWithDupes = wordsWithDupes;
+        return noDuplicate.substring(1);
     }
-    
-    // Getters and setters
-    public String getSearch_word() {
-        return search_word;
+
+    public void countAndEnlist() {
+        int[] frequencies = new int[words.length];
+        for (int i = 0; i < words.length; i++) {
+            int frequency = 0;
+            for (int j = 0; j < wordsWithDupes.length; j++) {
+                if (words[i].equals(wordsWithDupes[j])) {
+                    frequency++;
+                }
+            }
+            frequencies[i] = frequency;
+            this.frequency = frequency;
+        }
+        this.frequencies = frequencies;
     }
+
+    // getters and setters for WordsList Class
     public String getText() {
         return text;
     }
-    public boolean isFound() {
-        return isFound;
+
+    public void setText(String text) {
+        this.text = text;
     }
-    public void setFound(boolean isFound) {
-        this.isFound = isFound;
-    }
-    public void setSearch_word(String search_word) {
-        this.search_word = search_word;
-    }
-    public void setText(String text_new) {
-        this.text = text_new;
-    }
-    public int getWord_counter() {
-        return word_counter;
-    }
-    public void setWord_counter(int word_counter) {
-        this.word_counter = word_counter;
-    }
-    public int getText_length() {
-        return text_length;
-    }
-    public String[] getWordsArray() {
+
+    public String[] getWords() {
         return words;
     }
-    public String getWordInArray(int i) {
-        return words[i];
+
+    public void setWords(String[] words) {
+        this.words = words;
+    }
+
+    public void setAllWords(String[] allWords) {
+        this.wordsWithDupes = allWords;
+    }
+
+    public String getWord_ByPosition(int position) {
+        return words[position];
+    }
+
+    public boolean isFound_ByWord(String word, String text) {
+        return count_ByWord(word, text);
+    }
+
+    public int[] getFrequencies() {
+        return frequencies;
+    }
+
+    public int getFrequency() {
+        return frequency;
+    }
+}
+
+class SortedLists {
+    String[] words = new String[] {};
+    int[] frequencies = new int[] {};
+
+    WordLists wordsList = new WordLists();
+
+    void sortArrays(String[] words, int[] frequencies) {
+        // frequencies = frequenciesList.enlistFrequencies(text);
+        for (int i = 0; i < frequencies.length; i++) {
+            for (int j = 0; j < frequencies.length; j++) {
+                if (frequencies[i] > frequencies[j]) {
+                    int temp = frequencies[i];
+                    frequencies[i] = frequencies[j];
+                    frequencies[j] = temp;
+                    String wordTemp = words[i];
+                    words[i] = words[j];
+                    words[j] = wordTemp;
+                }
+            }
+        }
+        this.frequencies = frequencies;
+        this.words = words;
+    }
+
+    // getters and setters for ListsConnection Class
+    public int[] getFrequencies() {
+        return frequencies;
+    }
+
+    public String[] getWords() {
+        return words;
     }
 }
