@@ -25,18 +25,8 @@ class WordLists {
         this.frequency = frequency;
         if (frequency > 0) {
             found = true;
-            getPercentage();
         }
         return found;
-    }
-
-    public int getPercentage() {
-        int totalFreq = 0;
-        for (int i = 0; i < frequencies.length; i++) {
-            totalFreq += frequencies[i];
-        }
-        int percentage = (frequency * 100 / totalFreq);
-        return percentage;
     }
 
     public void enlistWords(String text) {
@@ -78,7 +68,6 @@ class WordLists {
         this.frequencies = frequencies;
     }
 
-    // getters and setters for WordsList Class
     public String getText() {
         return text;
     }
@@ -119,11 +108,12 @@ class WordLists {
 class SortedLists {
     String[] words = new String[] {};
     int[] frequencies = new int[] {};
+    String mostUsed = "";
+    int percentage = 0;
 
     WordLists wordsList = new WordLists();
 
     void sortArrays(String[] words, int[] frequencies) {
-        // frequencies = frequenciesList.enlistFrequencies(text);
         for (int i = 0; i < frequencies.length; i++) {
             for (int j = 0; j < frequencies.length; j++) {
                 if (frequencies[i] > frequencies[j]) {
@@ -138,14 +128,30 @@ class SortedLists {
         }
         this.frequencies = frequencies;
         this.words = words;
+        calculatePercentage();
+    }
+    
+    public void calculatePercentage() {
+        int totalFreq = 0;
+        mostUsed = words[0];
+        for (int i = 0; i < frequencies.length; i++) {
+            totalFreq += frequencies[i];
+        }
+        int percentage = (frequencies[0] * 100 / totalFreq);
+        this.percentage = percentage;
     }
 
-    // getters and setters for ListsConnection Class
     public int[] getFrequencies() {
         return frequencies;
     }
 
     public String[] getWords() {
         return words;
+    }
+    public String getMostUsed() {
+        return mostUsed;
+    }
+    public int getPercentage(){
+        return percentage;
     }
 }

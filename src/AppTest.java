@@ -4,17 +4,6 @@ import org.junit.Test;
 
 public class AppTest {
     @Test
-    public void check_text_get_set() {
-        // arrange
-        final String expectedText = "Java8 makes Java more powerful";
-        WordLists wordsArray = new WordLists();
-        // act
-        wordsArray.setText("Java8 makes Java more powerful");
-        // assert
-        assertEquals(expectedText, wordsArray.getText());
-    }
-
-    @Test
     public void search_word() {
         // arrange
         final boolean expectedBool = true;
@@ -23,18 +12,6 @@ public class AppTest {
         boolean actualBool = wordsList.isFound_ByWord("Java8", "Java8 makes Java more powerful");
         // assert
         assertEquals(expectedBool, actualBool);
-    }
-
-        @Test
-    public void search_word_get_percentage() {
-        // arrange
-        final int expectedPercent = 20;
-        WordLists wordsList = new WordLists();
-        // act
-        wordsList.isFound_ByWord("Java8", "Java8 makes Java more powerful");
-        int actualPercent = wordsList.getPercentage();
-        // assert
-        assertEquals(expectedPercent, actualPercent);
     }
 
     @Test
@@ -220,7 +197,40 @@ public class AppTest {
 
         // assert
         assertArrayEquals(expectedWords, actualWords);
-
     }
 
+    @Test
+    public void most_used_word_fromText() {
+        // arrange
+        final String expectedWord = "Java8";
+        String testText = "Java8 Java8 Java8 makes makes makes makes Java Java Java more more powerful Java8 Java8";
+        WordLists wordList = new WordLists();
+        SortedLists listsConnection = new SortedLists();
+
+        // act
+
+        wordList.enlistWords(testText);
+        listsConnection.sortArrays(wordList.getWords(), wordList.getFrequencies());
+        String actualWord = listsConnection.getMostUsed();
+
+        // assert
+        assertEquals(expectedWord, actualWord);
+    }
+
+    @Test
+    public void percentage_of_most_used_word_fromText() {
+        // arrange
+        final int expectedPercent = 33;
+        String testText = "Java8 Java8 Java8 makes makes makes makes Java Java Java more more powerful Java8 Java8";
+        WordLists wordList = new WordLists();
+        SortedLists listsConnection = new SortedLists();
+
+        // act
+        wordList.enlistWords(testText);
+        listsConnection.sortArrays(wordList.getWords(), wordList.getFrequencies());
+        int actualPercent = listsConnection.getPercentage();
+
+        // assert
+        assertEquals(expectedPercent, actualPercent);
+    }
 }
