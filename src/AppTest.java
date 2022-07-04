@@ -25,6 +25,18 @@ public class AppTest {
         assertEquals(expectedBool, actualBool);
     }
 
+        @Test
+    public void search_word_get_percentage() {
+        // arrange
+        final int expectedPercent = 20;
+        WordLists wordsList = new WordLists();
+        // act
+        wordsList.isFound_ByWord("Java8", "Java8 makes Java more powerful");
+        int actualPercent = wordsList.getPercentage();
+        // assert
+        assertEquals(expectedPercent, actualPercent);
+    }
+
     @Test
     public void word_appears_1_time() {
         // arrange

@@ -13,20 +13,30 @@ class WordLists {
     int[] frequencies = new int[] {};
     int frequency = 0;
 
-    boolean count_ByWord(String word , String text) {
+    boolean count_ByWord(String word, String text) {
         enlistWords(text);
         boolean found = false;
         int frequency = 0;
         for (int index = 0; index < wordsWithDupes.length; index++) {
             if (word.equals(wordsWithDupes[index])) {
                 frequency++;
-                }
+            }
         }
         this.frequency = frequency;
-        if (frequency>0) {
+        if (frequency > 0) {
             found = true;
+            getPercentage();
         }
         return found;
+    }
+
+    public int getPercentage() {
+        int totalFreq = 0;
+        for (int i = 0; i < frequencies.length; i++) {
+            totalFreq += frequencies[i];
+        }
+        int percentage = (frequency * 100 / totalFreq);
+        return percentage;
     }
 
     public void enlistWords(String text) {
