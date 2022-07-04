@@ -13,7 +13,7 @@ class WordLists {
     int[] frequencies = new int[] {};
     int frequency = 0;
 
-    boolean count_ByWord(String word, String text) {
+    boolean searchWord(String word, String text) {
         enlistWords(text);
         boolean found = false;
         int frequency = 0;
@@ -33,7 +33,7 @@ class WordLists {
         String textNoDuplicate = eliminateDuplicates(text, " ");
         String[] words = textNoDuplicate.split(" ");
         this.words = words;
-        countAndEnlist();
+        enlistFrequencies();
     }
 
     String eliminateDuplicates(String text, String splitterRegex) {
@@ -53,7 +53,7 @@ class WordLists {
         return noDuplicate.substring(1);
     }
 
-    public void countAndEnlist() {
+    public void enlistFrequencies() {
         int[] frequencies = new int[words.length];
         for (int i = 0; i < words.length; i++) {
             int frequency = 0;
@@ -93,7 +93,7 @@ class WordLists {
     }
 
     public boolean isFound_ByWord(String word, String text) {
-        return count_ByWord(word, text);
+        return searchWord(word, text);
     }
 
     public int[] getFrequencies() {
@@ -113,6 +113,11 @@ class SortedLists {
 
     WordLists wordsList = new WordLists();
 
+    void processText(String text){
+        wordsList.enlistWords(text);
+        sortArrays(wordsList.getWords(), wordsList.getFrequencies());
+    }
+
     void sortArrays(String[] words, int[] frequencies) {
         for (int i = 0; i < frequencies.length; i++) {
             for (int j = 0; j < frequencies.length; j++) {
@@ -128,10 +133,10 @@ class SortedLists {
         }
         this.frequencies = frequencies;
         this.words = words;
-        calculatePercentage();
+        calculateMostUsedWord();
     }
     
-    public void calculatePercentage() {
+    public void calculateMostUsedWord() {
         int totalFreq = 0;
         mostUsed = words[0];
         for (int i = 0; i < frequencies.length; i++) {

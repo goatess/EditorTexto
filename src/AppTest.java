@@ -19,12 +19,12 @@ public class AppTest {
         // arrange
         final int expectedFrequency = 1;
         WordLists wordsList = new WordLists();
-        String[] testArray = { "Java8", "makes", "Java", "more", "powerful" };
         String testText = "Java8 makes Java more powerful";
+
         // act
-        wordsList.setAllWords(testArray);
-        wordsList.count_ByWord("Java8", testText);
+        wordsList.searchWord("Java8", testText);
         int actualFrecuency = wordsList.getFrequency();
+
         // assert
         assertEquals(expectedFrequency, actualFrecuency);
     }
@@ -35,11 +35,9 @@ public class AppTest {
         final int expectedFrequency = 2;
         WordLists wordsList = new WordLists();
         String testText = "Java8 Java8 makes Java more powerful";
-        String[] testArray = { "Java8", "Java8", "makes", "Java", "more", "powerful" };
 
         // act
-        wordsList.setAllWords(testArray);
-        wordsList.count_ByWord("Java8", testText);
+        wordsList.searchWord("Java8", testText);
         int actualFrecuency = wordsList.getFrequency();
 
         // assert
@@ -101,7 +99,7 @@ public class AppTest {
         // wordsList.enlistWords(testText);
         wordList.setAllWords(testAllWords);
         wordList.setWords(testWords);
-        wordList.countAndEnlist();
+        wordList.enlistFrequencies();
         int[] actualFrequencies = wordList.getFrequencies();
 
         // assert
@@ -165,15 +163,10 @@ public class AppTest {
         // arrange
         final int[] expectedFrequencies = { 3, 2, 1, 1, 1 };
         String testText = "Java8 Java8 makes Java Java more powerful Java8";
-
-        WordLists wordList = new WordLists();
         SortedLists listsConnection = new SortedLists();
 
         // act
-        wordList.enlistWords(testText);
-        String[] testWords = wordList.getWords();
-        int[] testFreq = wordList.getFrequencies();
-        listsConnection.sortArrays(testWords, testFreq);
+        listsConnection.processText(testText);
         int[] actualFrequencies = listsConnection.getFrequencies();
 
         // assert
@@ -186,13 +179,11 @@ public class AppTest {
         // arrange
         final String[] expectedWords = { "Java8", "makes", "Java", "more", "powerful" };
         String testText = "Java8 Java8 Java8 makes makes makes makes Java Java Java more more powerful Java8 Java8";
-        WordLists wordList = new WordLists();
         SortedLists listsConnection = new SortedLists();
 
         // act
 
-        wordList.enlistWords(testText);
-        listsConnection.sortArrays(wordList.getWords(), wordList.getFrequencies());
+        listsConnection.processText(testText);
         String[] actualWords = listsConnection.getWords();
 
         // assert
@@ -204,13 +195,10 @@ public class AppTest {
         // arrange
         final String expectedWord = "Java8";
         String testText = "Java8 Java8 Java8 makes makes makes makes Java Java Java more more powerful Java8 Java8";
-        WordLists wordList = new WordLists();
         SortedLists listsConnection = new SortedLists();
 
         // act
-
-        wordList.enlistWords(testText);
-        listsConnection.sortArrays(wordList.getWords(), wordList.getFrequencies());
+        listsConnection.processText(testText);
         String actualWord = listsConnection.getMostUsed();
 
         // assert
@@ -222,12 +210,10 @@ public class AppTest {
         // arrange
         final int expectedPercent = 33;
         String testText = "Java8 Java8 Java8 makes makes makes makes Java Java Java more more powerful Java8 Java8";
-        WordLists wordList = new WordLists();
         SortedLists listsConnection = new SortedLists();
 
         // act
-        wordList.enlistWords(testText);
-        listsConnection.sortArrays(wordList.getWords(), wordList.getFrequencies());
+        listsConnection.processText(testText);
         int actualPercent = listsConnection.getPercentage();
 
         // assert
